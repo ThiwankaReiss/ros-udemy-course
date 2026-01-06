@@ -113,6 +113,12 @@
         <origin xyz="0 0 ${wheel_raidus}" rpy="0 0 0"/>
 
     </joint>
+    <joint name="arm_base_base_joint" type="fixed">
+        <parent link ="base_link"/>
+        <child link="arm_base_link"/>
+        <origin xyz="${(base_length-arm_base_length)/2} 0 ${base_height}" rpy="0 0 0"/>
+
+    </joint>
 
     <!-- <link name="second_link">
         <visual>
