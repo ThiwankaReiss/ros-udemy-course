@@ -16,7 +16,9 @@
         <arg name="gz_args" value="empty.sdf -r"/>
     </include> -->
 
-    <include file="$(find-pkg-share gazebo_ros)/launch/gazebo.launch.py"/>
+    <include file="$(find-pkg-share gazebo_ros)/launch/gazebo.launch.py">
+        <arg name="world" value="$(find-pkg-share my_robot_bringup)/worlds/test_world.world"/>
+    </include>
 
 
     <!-- <node pkg="ros_gz_sim" exec="create" args="-topic robot_description"/> -->
