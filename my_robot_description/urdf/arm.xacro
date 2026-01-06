@@ -18,14 +18,14 @@
             <origin xyz="0 0 ${arm_base_height/2}" rpy="0 0 0" />
             <material name="orange"/>
         </visual>
-        <!-- <collision>
+        <collision>
             <geometry>   
-                <box size="${base_length} ${base_width} ${base_height}"/>
+                <box size="${arm_base_length} ${arm_base_width} ${arm_base_height}"/>
             </geometry>
-            <origin xyz="0 0 ${base_height/2}" rpy="0 0 0" />
+            <origin xyz="0 0 ${arm_base_height/2}" rpy="0 0 0" />
         </collision>
-        <xacro:box_inertia m="5.0" x="${base_length}" y="${base_width}" z="${base_height}"
-                           o_xyz="0 0 ${base_height/2.0}" o_rpy="0 0 0 "/> -->
+        <xacro:box_inertia m="0.5" x="${arm_base_length}" y="${arm_base_width}" z="${arm_base_height}"
+                           o_xyz="0 0 ${arm_base_height/2.0}" o_rpy="0 0 0 "/>
     </link>
 
     <link name="fore_arm_link">
@@ -37,6 +37,14 @@
             <origin xyz="0 0 ${fore_arm_length/2}" rpy="0 0 0" />
             <material name="yellow"/>
         </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${fore_arm_radius}" length="${fore_arm_length}" />
+            </geometry>
+            <origin xyz="0 0 ${fore_arm_length/2}" rpy="0 0 0" />
+        </collision>
+        <xacro:cylinder_inertia m="0.3" r="${fore_arm_radius}" l="${fore_arm_length}"
+                        o_xyz="0 0 ${fore_arm_length/2}" o_rpy="0 0 0 "/>
     </link>
 
     <link name="hand_link">
@@ -48,6 +56,14 @@
             <origin xyz="0 0 ${hand_length/2}" rpy="0 0 0" />
             <material name="orange"/>
         </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="${hand_radius}" length="${hand_length}" />
+            </geometry>
+            <origin xyz="0 0 ${hand_length/2}" rpy="0 0 0" />
+        </collision>
+        <xacro:cylinder_inertia m="0.3" r="${hand_radius}" l="${hand_length}"
+                        o_xyz="0 0 ${hand_length/2}" o_rpy="0 0 0 "/>
     </link>
 
     <joint name="arm_base_fore_arm_joint" type="revolute">
@@ -55,6 +71,7 @@
         <child link="fore_arm_link"/>
         <limit effort="100" velocity="100" lower="0" upper="${pi/2}" />
         <axis xyz="0 1 0" />
+        <dynamics damping="0.05" friction="0.01"/>
         <origin xyz="0 0 ${arm_base_height}" rpy="0 0 0"/>
 
     </joint>
@@ -63,6 +80,7 @@
         <child link="hand_link"/>
         <limit effort="100" velocity="100" lower="0" upper="${pi/2}" />
         <axis xyz="0 1 0" />
+        <dynamics damping="0.05" friction="0.01"/>
         <origin xyz="0 0 ${fore_arm_length}" rpy="0 0 0"/>
 
     </joint>
