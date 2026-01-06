@@ -6,7 +6,7 @@
     <xacro:property name="base_height" value="0.2"/>
     <xacro:property name="wheel_raidus" value="0.1"/>
     <xacro:property name="wheel_length" value="0.05"/>
-    <link name="base_footprint_link"/>
+    <link name="base_footprint"/>
         
 
     <link name="base_link">
@@ -108,7 +108,7 @@
     </joint>
 
     <joint name="base_base_footprint_joint" type="fixed">
-        <parent link ="base_footprint_link"/>
+        <parent link ="base_footprint"/>
         <child link="base_link"/>
         <origin xyz="0 0 ${wheel_raidus}" rpy="0 0 0"/>
 
