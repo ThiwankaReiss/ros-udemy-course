@@ -66,21 +66,21 @@
                         o_xyz="0 0 ${hand_length/2}" o_rpy="0 0 0 "/>
     </link>
 
-    <joint name="arm_base_fore_arm_joint" type="revolute">
+    <joint name="arm_base_forearm_joint" type="revolute">
         <parent link ="arm_base_link"/>
         <child link="fore_arm_link"/>
         <limit effort="100" velocity="100" lower="0" upper="${pi/2}" />
         <axis xyz="0 1 0" />
-        <dynamics damping="0.05" friction="0.01"/>
+        <dynamics damping="0.1" friction="0.05"/>
         <origin xyz="0 0 ${arm_base_height}" rpy="0 0 0"/>
 
     </joint>
-    <joint name="fore_arm_hand_joint" type="revolute">
+    <joint name="forearm_hand_joint" type="revolute">
         <parent link ="fore_arm_link"/>
         <child link="hand_link"/>
         <limit effort="100" velocity="100" lower="0" upper="${pi/2}" />
         <axis xyz="0 1 0" />
-        <dynamics damping="0.05" friction="0.01"/>
+        <dynamics damping="0.1" friction="0.05"/>
         <origin xyz="0 0 ${fore_arm_length}" rpy="0 0 0"/>
 
     </joint>
