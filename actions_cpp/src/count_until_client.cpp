@@ -3,6 +3,8 @@
 #include "my_robot_interfaces/action/count_until.hpp"
 
 using CountUntil = my_robot_interfaces::action::CountUntil;
+using CountUntilGoalHandle = rclcpp_action::ClientGoalHandle<CountUntil>;
+using namespace std::placeholders;
 
 class CountUntilClientNode : public rclcpp::Node // MODIFY NAME
 {
@@ -23,12 +25,27 @@ public:
         goal.target_number = target_number;
         goal.period = period;
 
+        //Add callbacks
+        auto options = rclcpp_action::Client<CountUntil>::SendGoalOptions();
+        options.result_callback = std::bind(
+            &CountUntilClientNode::goal_result_callback,
+            this,
+            _1);
+
         // Send the goal
         RCLCPP_INFO(this->get_logger(), "Sending goal");
-        count_until_client_->async_send_goal(goal);
+        count_until_client_->async_send_goal(goal,options);
     }
         
 private:
+    // Callback to recive  the resu;t once the goal is done
+    void goal_result_callback(
+        const CountUntilGoalHandle::WrappedResult & result)
+    {
+        int reached_number = result.result->reached_number;
+        RCLCPP_INFO(this->get_logger(), "RESULT: %d", reached_number);
+    }
+
     rclcpp_action::Client<CountUntil>::SharedPtr count_until_client_;
 };
 
