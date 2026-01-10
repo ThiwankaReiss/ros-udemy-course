@@ -35,6 +35,11 @@ public:
             &CountUntilClientNode::goal_response_callback,
             this,
             _1);
+        options.feedback_callback = std::bind(
+            &CountUntilClientNode::goal_feedback_callback,
+            this,
+            _1,
+            _2);
         // Send the goal
         RCLCPP_INFO(this->get_logger(), "Sending goal");
         count_until_client_->async_send_goal(goal,options);
@@ -66,10 +71,21 @@ private:
            RCLCPP_INFO(this->get_logger(), "Aborted");
            return;
         }
-
         int reached_number = result.result->reached_number;
         RCLCPP_INFO(this->get_logger(), "RESULT: %d", reached_number);
+
+        
+       
     }
+    // Callback to recive feedback during goal execution
+    void goal_feedback_callback(const CountUntilGoalHandle::SharedPtr &goal_handle,
+        const std::shared_ptr<const CountUntil::Feedback> feedback)
+    {
+        (void)goal_handle;
+        int current_number = feedback->current_number;
+        RCLCPP_INFO(this->get_logger(), "FEEDBACK: %d", current_number);
+    }
+
 
     rclcpp_action::Client<CountUntil>::SharedPtr count_until_client_;
 };
