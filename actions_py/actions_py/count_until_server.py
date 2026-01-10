@@ -34,16 +34,25 @@ class CountUntilSeverNode(Node): # MODIFY NAME
         self.get_logger().info("Recived a goal")
 
         # Policy : refuse new goal if curengt goal is active
-        if self.goal_handle_ is not None and self.goal_handle_.is_active:
-            self.get_logger().info("A goal is already active rejecting new goal")
-            return GoalResponse.REJECT
+        #####-there is a  with self.goal_lock_: <- missed here  but code worked without it
+        # if self.goal_handle_ is not None and self.goal_handle_.is_active:
+        #     self.get_logger().info("A goal is already active rejecting new goal")
+        #     return GoalResponse.REJECT
 
         #Validate the goal request
         if goal_request.target_number <=0:
             self.get_logger().info("Rejecting the goal")
             return GoalResponse.REJECT
+
+        #prempt existing goal once new goal recived
+        with self.goal_lock_:
+            if self.goal_handle_ is not None and self.goal_handle_.is_active:
+                self.get_logger().info("Abort current goal and accept new")
+                self.goal_handle_.abort()
+
         self.get_logger().info("Accepting the goal")
         return GoalResponse.ACCEPT
+
 
     def execute_callback(self, goal_handle:ServerGoalHandle):
 
@@ -59,6 +68,9 @@ class CountUntilSeverNode(Node): # MODIFY NAME
         result = CountUntil.Result()
         counter =0
         for i in range(target_number):
+            if not goal_handle.is_active:
+                result.reached_number= counter
+                return result
             if goal_handle.is_cancel_requested:
                 self.get_logger().info("Cancelling the goal")
                 goal_handle.canceled()
