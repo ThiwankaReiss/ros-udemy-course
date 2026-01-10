@@ -16,6 +16,7 @@ public:
             std::bind(&CountUntilServerNode::cancel_callback, this,_1),
             std::bind(&CountUntilServerNode::handle_accepted_callback, this, _1));
         RCLCPP_INFO(this->get_logger(), "Action Server has been started.");   
+
     }
 
 private:
@@ -24,7 +25,13 @@ private:
         std::shared_ptr<const CountUntil::Goal> goal)
     {
         (void)uuid;
-        (void)goal;
+        RCLCPP_INFO(this->get_logger(), "Received goal ");
+        if(goal->target_number <=0)
+        {
+            RCLCPP_INFO(this->get_logger(), "Rejected a goal");
+            return rclcpp_action::GoalResponse::REJECT;
+        }
+        RCLCPP_INFO(this->get_logger(), "Accepted the goal");
         return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
     }
     rclcpp_action::CancelResponse cancel_callback(
