@@ -92,8 +92,8 @@ class MoveRobotServerNode(Node): # MODIFY NAME
         for i in range(steps):
 
             if not goal_handle.is_active:
-                result.position = current_position
-                self.robot_position_=current_position
+                result.position = int(current_position)
+                self.robot_position_=int(current_position)
                 result.message = "Preempted by another goal"
                 return result
 
