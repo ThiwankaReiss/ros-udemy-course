@@ -10,10 +10,10 @@ from example_interfaces.msg import Empty
 class MoveRobotClientNode(Node):
     def __init__(self):
         super().__init__("move_robot_client")
-        # self.goal_handle_ = None
+        self.goal_handle_ = None
         self.move_robot_client_ = ActionClient(self, MoveRobot, "move_robot")
-        # self.cancel_subscriber = self.create_subscription(
-        #     Empty, "cancel_move", self.callback_cancel_move, 10)
+        self.cancel_subscriber = self.create_subscription(
+            Empty, "cancel_move", self.callback_cancel_move, 10)
 
     def send_goal(self, position, velocity):
         self.move_robot_client_.wait_for_server()

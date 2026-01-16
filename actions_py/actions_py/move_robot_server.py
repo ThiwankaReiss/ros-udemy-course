@@ -21,7 +21,7 @@ class MoveRobotServerNode(Node):
             MoveRobot,
             "move_robot",
             goal_callback=self.goal_callback,
-            #cancel_callback=self.cancel_callback,
+            cancel_callback=self.cancel_callback,
             execute_callback=self.execute_callback,
             callback_group=ReentrantCallbackGroup()
             )
@@ -42,9 +42,9 @@ class MoveRobotServerNode(Node):
         self.get_logger().info("Accept goal")
         return GoalResponse.ACCEPT
     
-    # def cancel_callback(self, goal_handle: ServerGoalHandle):
-    #     self.get_logger().info("Received a cancel request")
-    #     return CancelResponse.ACCEPT
+    def cancel_callback(self, goal_handle: ServerGoalHandle):
+        self.get_logger().info("Received a cancel request")
+        return CancelResponse.ACCEPT
 
     def execute_callback(self, goal_handle: ServerGoalHandle):
         with self.goal_lock_:
@@ -63,15 +63,15 @@ class MoveRobotServerNode(Node):
                 result.message = "Preempted by another goal"
                 return result
             
-            # if goal_handle.is_cancel_requested:
-            #     result.position = self.robot_position_
-            #     if goal_position == self.robot_position_:
-            #         result.message = "Success after cancel request"
-            #         goal_handle.succeed()
-            #     else:
-            #         result.message = "Canceled"
-            #         goal_handle.canceled()
-            #     return result
+            if goal_handle.is_cancel_requested:
+                result.position = self.robot_position_
+                if goal_position == self.robot_position_:
+                    result.message = "Success after cancel request"
+                    goal_handle.succeed()
+                else:
+                    result.message = "Canceled"
+                    goal_handle.canceled()
+                return result
 
             diff = goal_position - self.robot_position_
 
