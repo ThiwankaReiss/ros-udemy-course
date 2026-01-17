@@ -24,13 +24,31 @@ class Node1(Node):
         time.sleep(2.0)
         self.get_logger().info("cb 3")
 
+class Node2(Node):
+    def __init__(self):
+        super().__init__("node2")
+        self.timer1_ = self.create_timer(1.0, self.callback_timer1)
+        self.timer2_ = self.create_timer(1.0, self.callback_timer2)
+
+
+    def callback_timer1(self):
+        time.sleep(2.0)
+        self.get_logger().info("cb 4")
+
+    def callback_timer2(self):
+        time.sleep(2.0)
+        self.get_logger().info("cb 5")
+
+
 
 def main(args=None):
     rclpy.init(args=args)
     node1 = Node1()
+    node2= Node2()
     # rclpy.spin(node)
     executor = SingleThreadedExecutor()
     executor.add_node(node1)
+    executor.add_node(node2)
     executor.spin()
     rclpy.shutdown()
 
