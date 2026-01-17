@@ -5,7 +5,8 @@
             "includePath": [
                 "/opt/ros/humble/include/**",
                 "usr/include/**",
-                "/mnt/c/Thiwanka/Ros_work/ros2_ws/install/my_robot_interfaces/include/**"
+                "/mnt/c/Thiwanka/Ros_work/ros2_ws/install/my_robot_interfaces/include/**",
+                "/mnt/c/Thiwanka/Ros_work/ros2_ws/src/components_cpp/include/**",
             ],
             "defines": [
                 "_DEBUG",
