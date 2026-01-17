@@ -22,7 +22,7 @@ setup(
         'console_scripts': [
             "number_publisher = lifecycle_py.number_publisher:main",
             "lifecycle_node_manager = lifecycle_py.lifecycle_node_manager:main",
-            
+            "move_robot_server = lifecycle_py.move_robot_server:main"
         ],
     },
 )
