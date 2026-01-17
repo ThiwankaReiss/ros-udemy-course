@@ -16,7 +16,8 @@ class NumberPublisherNode(LifecycleNode):
         self.number_timer_=None
        
     #Create ROS2 communication , connect to HW    
-    def configure(self, previous_state:LifecycleState):
+    def on_configure(self, previous_state:LifecycleState):
+        self.get_logger().info("IN on_configure")
         self.number_publisher_ = self.create_lifecycle_publisher(Int64, "number", 10)
         self.number_timer_ = self.create_timer(
             1.0 / self.publish_frequency_, self.publish_number)
@@ -56,3 +57,4 @@ def main(args=None):
     node = NumberPublisherNode()
     rclpy.spin(node)
     rclpy.shutdown()
+
